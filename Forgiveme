@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For Onyinye</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf6f0;
+      --warm: #f0e6d3;
+      --blush: #d4836a;
+      --deep: #2c1f14;
+      --mid: #7a5c44;
+      --light: #c4a882;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--deep);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Floating petals ── */
+    .petals {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      top: -40px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50% 0 50% 0;
+      background: var(--blush);
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+    .petal:nth-child(1)  { left: 8%;  width:8px;  height:8px;  animation-duration:12s; animation-delay:0s;   opacity:.15; }
+    .petal:nth-child(2)  { left: 20%; width:5px;  height:5px;  animation-duration:15s; animation-delay:2s;   opacity:.1;  }
+    .petal:nth-child(3)  { left: 35%; width:12px; height:12px; animation-duration:10s; animation-delay:4s;   opacity:.12; }
+    .petal:nth-child(4)  { left: 50%; width:7px;  height:7px;  animation-duration:14s; animation-delay:1s;   opacity:.1;  }
+    .petal:nth-child(5)  { left: 65%; width:9px;  height:9px;  animation-duration:11s; animation-delay:3s;   opacity:.13; }
+    .petal:nth-child(6)  { left: 80%; width:6px;  height:6px;  animation-duration:16s; animation-delay:0.5s; opacity:.1;  }
+    .petal:nth-child(7)  { left: 92%; width:11px; height:11px; animation-duration:13s; animation-delay:5s;   opacity:.12; }
+    .petal:nth-child(8)  { left: 45%; width:8px;  height:8px;  animation-duration:9s;  animation-delay:7s;   opacity:.1;  }
+
+    @keyframes fall {
+      0%   { transform: translateY(0)   rotate(0deg);   opacity: 0; }
+      10%  { opacity: .15; }
+      90%  { opacity: .1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Layout ── */
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: #02060f;
+      text-align: center;
+    }
+
+    #heroCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .hero > *:not(#heroCanvas) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #e8a090;
+      opacity: 0;
+      animation: rise 1s ease forwards 0.3s;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      line-height: 1.05;
+      color: #f0e8d8;
+      margin-top: 16px;
+      opacity: 0;
+      animation: rise 1.2s ease forwards 0.6s;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--blush);
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: rgba(196, 168, 130, 0.4);
+      margin: 32px auto;
+      opacity: 0;
+      animation: rise 1s ease forwards 1s;
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      color: #a89070;
+      max-width: 480px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: rise 1s ease forwards 1.2s;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: rise 1s ease forwards 2s;
+    }
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #a89070;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, #a89070, transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ── Memory section ── */
+    .memories {
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #beachCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .memories > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #fff8ee;
+      margin-bottom: 48px;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .memory-card {
+      background: rgba(255, 251, 243, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 2px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .memory-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--blush);
+      opacity: 0.7;
+    }
+    .memory-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.25);
+    }
+
+    .memory-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(212, 131, 106, 0.15);
+      position: absolute;
+      top: 12px; right: 20px;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .memory-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--deep);
+      margin-bottom: 12px;
+    }
+
+    .memory-card p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--mid);
+    }
+
+    /* ── Letter section ── */
+    .letter-section {
+      background: #050a18;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #starCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .letter {
+      max-width: 620px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .letter-top {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #c4b49a;
+      margin-bottom: 40px;
+    }
+
+    .letter p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      line-height: 2;
+      color: #f0e8d8;
+      margin-bottom: 28px;
+    }
+
+    .letter p em {
+      font-style: italic;
+      color: #e8a090;
+    }
+
+    .letter-closing {
+      margin-top: 48px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #c4b49a;
+    }
+
+    .letter-closing strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: #e8a090;
+      margin-top: 8px;
+    }
+
+    /* ── Final section ── */
+    .final {
+      background: var(--deep);
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .final h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .final h2 em {
+      font-style: italic;
+      color: var(--blush);
+    }
+
+    .final p {
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--light);
+      opacity: 0.7;
+    }
+
+    /* ── Scroll animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Grain overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Petals -->
+  <div class="petals">
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <canvas id="heroCanvas"></canvas>
+    <p class="hero-eyebrow">A letter, from the heart</p>
+    <h1>For <em>Onyinye</em></h1>
+    <div class="divider"></div>
+    <p class="hero-sub">Some things are too important to say with just words — so I built this.</p>
+    <div class="scroll-hint">
+      <span>Read on</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Memories -->
+  <section class="memories">
+    <canvas id="beachCanvas"></canvas>
+    <p class="section-label reveal">Remember what we have</p>
+    <div class="memory-grid">
+      <div class="memory-card reveal">
+        <span class="memory-number">01</span>
+        <h3>The laughter</h3>
+        <p>The moments where we laughed until it hurt, where the world outside stopped mattering and it was just us — that joy is real, and it's ours.</p>
+      </div>
+      <div class="memory-card reveal">
+        <span class="memory-number">02</span>
+        <h3>The quiet warmth</h3>
+        <p>The ordinary evenings, the small gestures, the way we fit together in the unremarkable moments — those are the ones I hold closest.</p>
+      </div>
+      <div class="memory-card reveal">
+        <span class="memory-number">03</span>
+        <h3>What we've built</h3>
+        <p>Trust, comfort, a place where we both could be fully ourselves. That doesn't come easily, and I have never taken it for granted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Letter -->
+  <section class="letter-section">
+    <canvas id="starCanvas"></canvas>
+    <div class="letter">
+      <p class="letter-top reveal">My dearest Onyinye,</p>
+
+      <p class="reveal">
+        I won't pretend what happened didn't hurt you. It did, and I own that completely. But I need you to know who I was when I stumbled — I was still the person who loves you. <em>I am human, and humans falter.</em> That truth doesn't excuse anything, but I hope it helps you see that this was never a reflection of how deeply I value you.
+      </p>
+
+      <p class="reveal">
+        There will be people in your life who walk away the moment things get hard. I am not one of them. I am asking you to stay — not because it's easy, but because what we have is worth the difficulty. <em>Please don't leave me in the dark when the light I need most is you.</em>
+      </p>
+
+      <p class="reveal">
+        At my most difficult, I need you the most. Not a perfect version of you — just you. Your voice, your presence, your willingness to believe in me even when I've given you reason to doubt. That belief means everything.
+      </p>
+
+      <p class="reveal">
+        I'm sorry. Truly, deeply sorry. And I am right here — ready to be better, ready to earn back what I may have bruised, ready to hold this with both hands if you'll let me.
+      </p>
+
+      <div class="letter-closing reveal">
+        With all of me,
+        <strong>Always yours</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final -->
+  <section class="final">
+    <h2 class="reveal">Come back<br>to <em>me.</em></h2>
+    <p class="reveal">I'll be here.</p>
+  </section>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Beach canvas ──
+    const beachCanvas = document.getElementById('beachCanvas');
+    const bCtx = beachCanvas.getContext('2d');
+
+    function resizeBeach() {
+      const section = beachCanvas.parentElement;
+      beachCanvas.width  = section.offsetWidth;
+      beachCanvas.height = section.offsetHeight;
+    }
+
+    let bFrame = 0;
+
+    // Wave state
+    const waves = [
+      { y: 0.72, speed: 0.018, amp: 0.022, offset: 0,    color: 'rgba(72,160,200,0.55)' },
+      { y: 0.75, speed: 0.013, amp: 0.018, offset: 1.2,  color: 'rgba(90,180,210,0.45)' },
+      { y: 0.78, speed: 0.009, amp: 0.013, offset: 2.5,  color: 'rgba(140,210,220,0.35)' },
+    ];
+
+    // Foam particles
+    const foamDots = Array.from({ length: 38 }, () => ({
+      x: Math.random(),
+      life: Math.random(),
+      speed: Math.random() * 0.003 + 0.001,
+      size: Math.random() * 3 + 1,
+    }));
+
+    // Seagulls
+    const gulls = Array.from({ length: 5 }, () => ({
+      x: Math.random(),
+      y: 0.18 + Math.random() * 0.22,
+      speed: (Math.random() * 0.0006 + 0.0002) * (Math.random() < 0.5 ? 1 : -1),
+      wingPhase: Math.random() * Math.PI * 2,
+      wingSpeed: Math.random() * 0.08 + 0.05,
+      size: Math.random() * 5 + 7,
+    }));
+
+    function drawBeach() {
+      const w = beachCanvas.width, h = beachCanvas.height;
+      bCtx.clearRect(0, 0, w, h);
+
+      // ── Sky ──
+      const sky = bCtx.createLinearGradient(0, 0, 0, h * 0.72);
+      sky.addColorStop(0,   '#f9c072');   // warm amber top
+      sky.addColorStop(0.3, '#f4845a');   // coral middle
+      sky.addColorStop(0.6, '#e8a87c');   // peach
+      sky.addColorStop(1,   '#b8dce8');   // soft horizon blue
+      bCtx.fillStyle = sky;
+      bCtx.fillRect(0, 0, w, h * 0.78);
+
+      // Sun glow
+      const sunX = w * 0.72, sunY = h * 0.22;
+      const sunGlow = bCtx.createRadialGradient(sunX, sunY, 0, sunX, sunY, w * 0.3);
+      sunGlow.addColorStop(0,   'rgba(255, 240, 160, 0.55)');
+      sunGlow.addColorStop(0.3, 'rgba(255, 200, 80, 0.18)');
+      sunGlow.addColorStop(1,   'rgba(255,180,60, 0)');
+      bCtx.fillStyle = sunGlow;
+      bCtx.fillRect(0, 0, w, h * 0.78);
+
+      // Sun disc
+      bCtx.beginPath();
+      bCtx.arc(sunX, sunY, w * 0.038, 0, Math.PI * 2);
+      bCtx.fillStyle = '#ffe980';
+      bCtx.fill();
+
+      // Horizon shimmer
+      const shimmer = bCtx.createLinearGradient(0, h * 0.6, 0, h * 0.73);
+      shimmer.addColorStop(0, 'rgba(255,220,150,0.0)');
+      shimmer.addColorStop(1, 'rgba(255,220,150,0.15)');
+      bCtx.fillStyle = shimmer;
+      bCtx.fillRect(0, h * 0.6, w, h * 0.13);
+
+      // ── Seagulls ──
+      gulls.forEach(g => {
+        g.x += g.speed;
+        if (g.x > 1.05) g.x = -0.05;
+        if (g.x < -0.05) g.x = 1.05;
+        g.wingPhase += g.wingSpeed;
+        const flap = Math.sin(g.wingPhase) * 0.35;
+        const gx = g.x * w, gy = g.y * h;
+        const s = g.size;
+        bCtx.strokeStyle = 'rgba(40, 30, 20, 0.55)';
+        bCtx.lineWidth = 1.2;
+        bCtx.beginPath();
+        // left wing
+        bCtx.moveTo(gx, gy);
+        bCtx.quadraticCurveTo(gx - s * 0.6, gy - s * flap, gx - s * 1.2, gy + s * 0.1);
+        // right wing
+        bCtx.moveTo(gx, gy);
+        bCtx.quadraticCurveTo(gx + s * 0.6, gy - s * flap, gx + s * 1.2, gy + s * 0.1);
+        bCtx.stroke();
+      });
+
+      // ── Ocean ──
+      const ocean = bCtx.createLinearGradient(0, h * 0.72, 0, h * 0.85);
+      ocean.addColorStop(0, '#5ab4d4');
+      ocean.addColorStop(1, '#2a7a9e');
+      bCtx.fillStyle = ocean;
+      bCtx.fillRect(0, h * 0.72, w, h * 0.13);
+
+      // Sun reflection on water
+      const reflX = sunX;
+      const refl = bCtx.createLinearGradient(reflX - w*0.06, h*0.72, reflX + w*0.06, h*0.82);
+      refl.addColorStop(0, 'rgba(255,240,140,0)');
+      refl.addColorStop(0.5, 'rgba(255,240,140,0.28)');
+      refl.addColorStop(1, 'rgba(255,240,140,0)');
+      bCtx.fillStyle = refl;
+      bCtx.fillRect(reflX - w*0.06, h*0.72, w*0.12, h*0.1);
+
+      // ── Waves ──
+      waves.forEach(wave => {
+        bCtx.beginPath();
+        const baseY = wave.y * h;
+        const dy = wave.amp * h;
+        bCtx.moveTo(0, baseY);
+        for (let x = 0; x <= w; x += 4) {
+          const y = baseY + Math.sin((x / w) * Math.PI * 5 + bFrame * wave.speed + wave.offset) * dy;
+          bCtx.lineTo(x, y);
+        }
+        bCtx.lineTo(w, h);
+        bCtx.lineTo(0, h);
+        bCtx.closePath();
+        bCtx.fillStyle = wave.color;
+        bCtx.fill();
+      });
+
+      // ── Sand ──
+      const sand = bCtx.createLinearGradient(0, h * 0.82, 0, h);
+      sand.addColorStop(0, '#e8c98a');
+      sand.addColorStop(0.4, '#d4b070');
+      sand.addColorStop(1,   '#c09a5a');
+      bCtx.fillStyle = sand;
+      bCtx.fillRect(0, h * 0.82, w, h * 0.18);
+
+      // Wet sand near water
+      const wetSand = bCtx.createLinearGradient(0, h * 0.80, 0, h * 0.86);
+      wetSand.addColorStop(0, 'rgba(100,160,190,0)');
+      wetSand.addColorStop(1, 'rgba(100,160,190,0.22)');
+      bCtx.fillStyle = wetSand;
+      bCtx.fillRect(0, h * 0.80, w, h * 0.06);
+
+      // ── Foam dots along waterline ──
+      foamDots.forEach(dot => {
+        dot.life += dot.speed;
+        if (dot.life > 1) { dot.life = 0; dot.x = Math.random(); }
+        const alpha = Math.sin(dot.life * Math.PI) * 0.55;
+        const fx = dot.x * w;
+        const fy = h * 0.825 + Math.sin(bFrame * 0.015 + dot.x * 8) * h * 0.01;
+        bCtx.beginPath();
+        bCtx.arc(fx, fy, dot.size, 0, Math.PI * 2);
+        bCtx.fillStyle = `rgba(255,255,255,${alpha})`;
+        bCtx.fill();
+      });
+
+      bFrame++;
+    }
+
+    function animateBeach() {
+      drawBeach();
+      requestAnimationFrame(animateBeach);
+    }
+
+    resizeBeach();
+    animateBeach();
+    window.addEventListener('resize', resizeBeach);
+
+    // ── Hero starry canvas (subtle) ──
+    const heroCanvas = document.getElementById('heroCanvas');
+    const hCtx = heroCanvas.getContext('2d');
+
+    function resizeHero() {
+      const section = heroCanvas.parentElement;
+      heroCanvas.width  = section.offsetWidth;
+      heroCanvas.height = section.offsetHeight;
+    }
+
+    const heroStars = Array.from({ length: 120 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.1 + 0.2,
+      alpha: Math.random() * 0.5 + 0.1,
+      speed: Math.random() * 0.008 + 0.003,
+      offset: Math.random() * Math.PI * 2,
+    }));
+
+    const heroBright = Array.from({ length: 6 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.2 + 1.0,
+      alpha: Math.random() * 0.3 + 0.5,
+      speed: Math.random() * 0.004 + 0.002,
+      offset: Math.random() * Math.PI * 2,
+    }));
+
+    let hFrame = 0;
+
+    function drawHeroStars() {
+      const w = heroCanvas.width, h = heroCanvas.height;
+      hCtx.clearRect(0, 0, w, h);
+
+      // Deep background gradient
+      const grad = hCtx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#010408');
+      grad.addColorStop(0.5, '#030810');
+      grad.addColorStop(1, '#06091a');
+      hCtx.fillStyle = grad;
+      hCtx.fillRect(0, 0, w, h);
+
+      // Very faint warm nebula centre — gives a sense of depth
+      const glow = hCtx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, w * 0.55);
+      glow.addColorStop(0, 'rgba(60, 30, 10, 0.08)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      hCtx.fillStyle = glow;
+      hCtx.fillRect(0, 0, w, h);
+
+      // Stars
+      heroStars.forEach(s => {
+        const twinkle = s.alpha * (0.6 + 0.4 * Math.sin(hFrame * s.speed + s.offset));
+        hCtx.beginPath();
+        hCtx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+        hCtx.fillStyle = `rgba(255, 248, 240, ${twinkle})`;
+        hCtx.fill();
+      });
+
+      heroBright.forEach(s => {
+        const twinkle = s.alpha * (0.7 + 0.3 * Math.sin(hFrame * s.speed + s.offset));
+        const glow = hCtx.createRadialGradient(s.x*w, s.y*h, 0, s.x*w, s.y*h, s.r * 5);
+        glow.addColorStop(0, `rgba(230, 210, 190, ${twinkle * 0.25})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        hCtx.fillStyle = glow;
+        hCtx.beginPath();
+        hCtx.arc(s.x*w, s.y*h, s.r * 5, 0, Math.PI * 2);
+        hCtx.fill();
+        hCtx.beginPath();
+        hCtx.arc(s.x*w, s.y*h, s.r, 0, Math.PI * 2);
+        hCtx.fillStyle = `rgba(255, 250, 245, ${twinkle})`;
+        hCtx.fill();
+      });
+
+      hFrame++;
+    }
+
+    function animateHero() {
+      drawHeroStars();
+      requestAnimationFrame(animateHero);
+    }
+
+    resizeHero();
+    animateHero();
+    window.addEventListener('resize', resizeHero);
+
+    // ── Starry night canvas ──
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      const section = canvas.parentElement;
+      canvas.width  = section.offsetWidth;
+      canvas.height = section.offsetHeight;
+      drawStars();
+    }
+
+    const stars = Array.from({ length: 280 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.7 + 0.2,
+      speed: Math.random() * 0.012 + 0.004,
+      offset: Math.random() * Math.PI * 2,
+    }));
+
+    // A few larger "bright" stars
+    const brightStars = Array.from({ length: 12 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.8 + 1.2,
+      alpha: Math.random() * 0.4 + 0.6,
+      speed: Math.random() * 0.006 + 0.002,
+      offset: Math.random() * Math.PI * 2,
+    }));
+
+    let frame = 0;
+
+    function drawStars() {
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Deep night gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0,   '#02060f');
+      grad.addColorStop(0.4, '#050d1e');
+      grad.addColorStop(1,   '#0a0520');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Subtle nebula glow
+      const nebula = ctx.createRadialGradient(w * 0.6, h * 0.3, 0, w * 0.6, h * 0.3, w * 0.45);
+      nebula.addColorStop(0, 'rgba(80, 40, 120, 0.12)');
+      nebula.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = nebula;
+      ctx.fillRect(0, 0, w, h);
+
+      const nebula2 = ctx.createRadialGradient(w * 0.2, h * 0.7, 0, w * 0.2, h * 0.7, w * 0.35);
+      nebula2.addColorStop(0, 'rgba(30, 60, 120, 0.1)');
+      nebula2.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = nebula2;
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw twinkling stars
+      [...stars, ...brightStars].forEach(s => {
+        const twinkle = s.alpha * (0.7 + 0.3 * Math.sin(frame * s.speed + s.offset));
+        ctx.beginPath();
+        ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 248, 235, ${twinkle})`;
+        ctx.fill();
+
+        // Soft glow for bright stars
+        if (s.r > 1.5) {
+          const glow = ctx.createRadialGradient(s.x*w, s.y*h, 0, s.x*w, s.y*h, s.r * 5);
+          glow.addColorStop(0, `rgba(220, 200, 255, ${twinkle * 0.3})`);
+          glow.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(s.x*w, s.y*h, s.r * 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    }
+
+    function animate() {
+      frame++;
+      drawStars();
+      requestAnimationFrame(animate);
+    }
+
+    resize();
+    animate();
+    window.addEventListener('resize', resize);
+  </script>
+</body>
+</html>
